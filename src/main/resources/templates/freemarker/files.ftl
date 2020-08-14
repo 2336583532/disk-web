@@ -1,6 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
-<head>
     <title>我的文件</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="/assets/media/image/favicon.png"/>
@@ -34,9 +33,13 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="/assets/js/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css"  media="all">
+    <script src="/layui/layui.js"></script>
+
 </head>
 </head>
-<body>
+<body id="app">
 <!-- Preloader -->
 <div class="preloader">
     <div class="preloader-icon"></div>
@@ -217,7 +220,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-big">
                                 <div class="text-center py-4"
-                                     data-background-image="assets/media/image/image1.jpg">
+                                     data-background-image="/assets/media/image/image1.jpg">
                                     <figure class="avatar avatar-lg mb-3 border-0">
                                         <img src="/assets/media/image/user/man_avatar3.jpg"
                                              class="rounded-circle" alt="image">
@@ -297,7 +300,7 @@
                 <li>
                     <a  href="users.html">
                         <i class="nav-link-icon ti-user"></i>
-                        <span class="nav-link-label">Users</span>
+                        <span class="nav-link-label">用户</span>
                     </a>
                 </li>
                 <li class="flex-grow-1">
@@ -322,7 +325,6 @@
             <!-- Content -->
             <div class="content">
                 <div class="page-header d-flex justify-content-between">
-                    <h2>Files</h2>
                     <a href="#" class="files-toggler">
                         <i class="ti-menu"></i>
                     </a>
@@ -337,9 +339,7 @@
                         </div>
                     </div>
                     <div class="col-xl-9">
-                        <div class="content-title mt-0">
-                            <h4>Documents</h4>
-                        </div>
+
                         <div class="d-md-flex justify-content-between mb-4">
                             <ul class="list-inline mb-3">
                                 <li class="list-inline-item mb-0">
@@ -347,8 +347,8 @@
                                         新建
                                     </a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">新建文件夹</a>
-                                        <a class="dropdown-item" href="#">上传文件</a>
+                                        <a class="dropdown-item"  href="javascript:void(0);" onclick="mkdir()">新建文件夹</a>
+                                        <a class="dropdown-item"  href="javascript:void(0);">上传文件</a>
                                     </div>
                                 </li>
                             </ul>
@@ -373,6 +373,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
+                            <a href="#">返回上一级<a></a>:<span id="path"><a href="#" data="/">/</a></span>
                             <table id="table-files" class="table table-borderless table-hover">
                                 <thead>
                                 <tr>
@@ -384,6 +385,8 @@
                                     </th>
                                     <th>名称</th>
                                     <th>修改时间</th>
+                                    <th></th>
+                                    <th></th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -398,19 +401,23 @@
                                     </span>
                                             </figure>
                                             <span class="d-flex flex-column">
-                                    <span class="text-primary">Design Thinking Project</span>
-                                    <span class="small font-italic">550 KB</span>
+                                    <span class="text-primary">Important Documents</span>
+                                    <span class="small font-italic">590 KB</span>
                                 </span>
                                         </a>
                                     </td>
                                     <td>3/9/19, 2:40PM</td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a href="#" class="btn btn-floating" data-toggle="dropdown">
                                                 <i class="ti-more-alt"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#" class="dropdown-item" data-sidebar-target="#view-detail">查看</a>
+                                                <a href="#" class="dropdown-item" data-sidebar-target="#view-detail">查看详情</a>
                                                 <a href="#" class="dropdown-item">分享</a>
                                                 <a href="#" class="dropdown-item">下载</a>
                                                 <a href="#" class="dropdown-item">复制到</a>
@@ -420,7 +427,6 @@
                                             </div>
                                         </div>
                                     </td>
-
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -439,33 +445,8 @@
                                     </td>
                                     <td>3/9/19, 2:40PM</td>
                                     <td>
-                                        <div class="badge bg-primary-bright text-primary">Public</div>
                                     </td>
                                     <td>
-                                        <div class="avatar-group">
-                                            <figure class="avatar avatar-sm" title="Lisle Essam"
-                                                    data-toggle="tooltip">
-                                                <img src="assets/media/image/user/women_avatar2.jpg"
-                                                     class="rounded-circle"
-                                                     alt="image">
-                                            </figure>
-                                            <figure class="avatar avatar-sm" title="Baxie Roseblade"
-                                                    data-toggle="tooltip">
-                                                <img src="assets/media/image/user/man_avatar5.jpg"
-                                                     class="rounded-circle"
-                                                     alt="image">
-                                            </figure>
-                                            <figure class="avatar avatar-sm" title="Mella Mixter"
-                                                    data-toggle="tooltip">
-                                                <img src="assets/media/image/user/women_avatar1.jpg"
-                                                     class="rounded-circle"
-                                                     alt="image">
-                                            </figure>
-                                            <figure class="avatar avatar-sm" title="" data-toggle="tooltip"
-                                                    data-original-title="Cullie Philcott">
-                                                <span class="avatar-title bg-primary rounded-circle">+ 5</span>
-                                            </figure>
-                                        </div>
                                     </td>
                                     <td class="text-right">
                                         <div class="dropdown">
@@ -473,7 +454,7 @@
                                                 <i class="ti-more-alt"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#" class="dropdown-item" data-sidebar-target="#view-detail">查看</a>
+                                                <a href="#" class="dropdown-item" data-sidebar-target="#view-detail">查看详情</a>
                                                 <a href="#" class="dropdown-item">分享</a>
                                                 <a href="#" class="dropdown-item">下载</a>
                                                 <a href="#" class="dropdown-item">复制到</a>
@@ -535,7 +516,7 @@
                                         <div class="col-sm-9">
                                             <div class="avatar-group">
                                                 <figure class="avatar avatar-sm">
-                                                    <img src="assets/media/image/user/women_avatar3.jpg"
+                                                    <img src="/assets/media/image/user/women_avatar3.jpg"
                                                          class="rounded-circle"
                                                          alt="image">
                                                 </figure>
@@ -543,7 +524,7 @@
                                                     <span class="avatar-title bg-danger rounded-circle">S</span>
                                                 </figure>
                                                 <figure class="avatar avatar-sm">
-                                                    <img src="assets/media/image/user/women_avatar5.jpg"
+                                                    <img src="/assets/media/image/user/women_avatar5.jpg"
                                                          class="rounded-circle"
                                                          alt="image">
                                                 </figure>
@@ -586,7 +567,7 @@
                                                             <div class="mr-2">
                                                                 <figure class="avatar avatar-sm">
                                                                     <img
-                                                                            src="assets/media/image/user/women_avatar3.jpg"
+                                                                            src="/assets/media/image/user/women_avatar3.jpg"
                                                                             class="rounded-circle" alt="image">
                                                                 </figure>
                                                             </div>
@@ -605,7 +586,7 @@
                                                             <div class="mr-2">
                                                                 <figure class="avatar avatar-sm">
                                                                     <img
-                                                                            src="assets/media/image/user/women_avatar2.jpg"
+                                                                            src="/assets/media/image/user/women_avatar2.jpg"
                                                                             class="rounded-circle" alt="image">
                                                                 </figure>
                                                             </div>
@@ -623,7 +604,7 @@
                                                         <li class="list-group-item d-flex align-items-center pl-0 pr-0">
                                                             <div class="mr-2">
                                                                 <figure class="avatar avatar-sm">
-                                                                    <img src="assets/media/image/user/man_avatar2.jpg"
+                                                                    <img src="/assets/media/image/user/man_avatar2.jpg"
                                                                          class="rounded-circle" alt="image">
                                                                 </figure>
                                                             </div>
@@ -1067,5 +1048,7 @@
 
 <!-- App scripts -->
 <script src="/assets/js/app.js"></script>
+<script src="/assets/js/disk/filesOption.js"></script>
+
 </body>
 </html>
