@@ -66,6 +66,7 @@ $(function () {
         'order': [1, 'asc']
     });
 
+
     $(document).on('click', '#files-select-all', function () {
         // Check/uncheck all checkboxes in the table
         var rows = table.rows({'search': 'applied'}).nodes();
@@ -81,6 +82,7 @@ $(function () {
             }
         }
     });
+
 
     $(document).on('click', '#table-files .custom-control-input', function () {
         if ($(this).prop('checked')) {

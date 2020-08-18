@@ -36,6 +36,7 @@
     <script src="/assets/js/jquery-3.3.1.js"></script>
     <link rel="stylesheet" href="/layui/css/layui.css"  media="all">
     <script src="/layui/layui.js"></script>
+    <script src="/layui/lay/dest/layui.all.js" charset="utf-8"></script>
 
 </head>
 </head>
@@ -348,7 +349,7 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"  href="javascript:void(0);" onclick="mkdir()">新建文件夹</a>
-                                        <a class="dropdown-item"  href="javascript:void(0);">上传文件</a>
+                                        <a class="dropdown-item"  href="javascript:void(0);" id="fileUpload">上传文件</a>
                                     </div>
                                 </li>
                             </ul>
@@ -373,7 +374,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <a href="#">返回上一级<a></a>:<span id="path"><a href="#" data="/">/</a></span>
+                            <a href="javascript:void(0);" onclick="loadParentNode()">返回上一级</a>:<span id="path"><a href="javascript:void(0);" data="/" onclick="loadFileNode("/")>/</a></span>
                             <table id="table-files" class="table table-borderless table-hover">
                                 <thead>
                                 <tr>
@@ -390,81 +391,8 @@
                                     <th></th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <a href="#" class="d-flex align-items-center">
-                                            <figure class="avatar avatar-sm mr-3">
-                                    <span class="avatar-title bg-warning text-black-50 rounded-pill">
-                                        <i class="ti-folder"></i>
-                                    </span>
-                                            </figure>
-                                            <span class="d-flex flex-column">
-                                    <span class="text-primary">Important Documents</span>
-                                    <span class="small font-italic">590 KB</span>
-                                </span>
-                                        </a>
-                                    </td>
-                                    <td>3/9/19, 2:40PM</td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="dropdown">
-                                            <a href="#" class="btn btn-floating" data-toggle="dropdown">
-                                                <i class="ti-more-alt"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#" class="dropdown-item" data-sidebar-target="#view-detail">查看详情</a>
-                                                <a href="#" class="dropdown-item">分享</a>
-                                                <a href="#" class="dropdown-item">下载</a>
-                                                <a href="#" class="dropdown-item">复制到</a>
-                                                <a href="#" class="dropdown-item">移动到</a>
-                                                <a href="#" class="dropdown-item">重命名</a>
-                                                <a href="#" class="dropdown-item">删除</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <a href="#" class="d-flex align-items-center">
-                                            <figure class="avatar avatar-sm mr-3">
-                                    <span class="avatar-title rounded-pill">
-                                        <i class="ti-file"></i>
-                                    </span>
-                                            </figure>
-                                            <span class="d-flex flex-column">
-                                    <span class="text-primary">Meeting-notes.doc</span>
-                                    <span class="small font-italic">139KB</span>
-                                </span>
-                                        </a>
-                                    </td>
-                                    <td>3/9/19, 2:40PM</td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td class="text-right">
-                                        <div class="dropdown">
-                                            <a href="#" class="btn btn-floating" data-toggle="dropdown">
-                                                <i class="ti-more-alt"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#" class="dropdown-item" data-sidebar-target="#view-detail">查看详情</a>
-                                                <a href="#" class="dropdown-item">分享</a>
-                                                <a href="#" class="dropdown-item">下载</a>
-                                                <a href="#" class="dropdown-item">复制到</a>
-                                                <a href="#" class="dropdown-item">移动到</a>
-                                                <a href="#" class="dropdown-item">重命名</a>
-                                                <a href="#" class="dropdown-item">删除</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <tbody id="fileNodeBody">
+
                                 </tbody>
                             </table>
                         </div>
@@ -1044,9 +972,12 @@
 <script src="/vendors/jstree/jstree.min.js"></script>
 
 <!-- Files page examples -->
+
 <script src="/assets/js/examples/files.js"></script>
 
+
 <!-- App scripts -->
+
 <script src="/assets/js/app.js"></script>
 <script src="/assets/js/disk/filesOption.js"></script>
 
