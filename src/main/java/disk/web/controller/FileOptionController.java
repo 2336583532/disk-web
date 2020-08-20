@@ -76,6 +76,4 @@ public class FileOptionController {
         ResMsg<Boolean> files = fileOption.uploadFile(file);
         return files;
     }
-
-
 }

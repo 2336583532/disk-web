@@ -41,6 +41,7 @@
 </head>
 </head>
 <body id="app">
+<input type="file" name="file" id="file" value="" placeholder="上传文件">
 <!-- Preloader -->
 <div class="preloader">
     <div class="preloader-icon"></div>
@@ -349,7 +350,7 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item"  href="javascript:void(0);" onclick="mkdir()">新建文件夹</a>
-                                        <a class="dropdown-item"  href="javascript:void(0);" id="fileUpload">上传文件</a>
+                                        <a class="dropdown-item"  href="javascript:void(0);" onclick="postData()">上传文件</a>
                                     </div>
                                 </li>
                             </ul>

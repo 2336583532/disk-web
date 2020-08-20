@@ -1,18 +1,7 @@
-layui.use(['layer','upload'], function(){
+layui.use(['layer'], function(){
     var layer = layui.layer;
     var $ = layui.jquery;
-    var upload = layui.upload;
-    upload.render({
-        elem: '#fileUpload'
-        ,url: 'https://httpbin.org/post' //改成您自己的上传接口
-        ,accept: 'file' //普通文件
-        ,done: function(res){
-            layer.msg('上传成功');
-            console.log(res);
-        }
-    });
 });
-
 
 $(function(){
     var path = $("#path").children("a:last-child").attr("data");
@@ -92,6 +81,27 @@ function loadParentNode(){
             layer.alert(result.msg)
         }
     });
+}
+/*文件上传*/
+function postData() {
+    $("#file").trigger("click");
+    var formData = new FormData();
+    formData.append("file", $("#file")[0].files[0]);
+    $.ajax({
+        url: '/disk/FileOption/uploadFile', /*接口域名地址*/
+        type: 'post',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            console.log(res.data);
+            if (res.code == "0") {
+                layer.alert("添加成功")
+            } else{
+                layer.alert(res.msg)
+            }
+        }
+    })
 }
 
 function showFileNode(FileNodes){
