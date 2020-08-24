@@ -3,11 +3,82 @@ layui.use(['layer'], function(){
     var $ = layui.jquery;
 });
 
+
+
+//上传文件
 $(function(){
     var path = $("#path").children("a:last-child").attr("data");
     loadFileNode(path);
+    $("#file").change(function(){
+        var formData = new FormData()
+        if($("#file").val() == ""){
+            return;
+        }
+        var path = $("#path").children("a:last-child").attr("data");
+        formData.append("file", document.getElementById('file').files[0]);
+        formData.append("toPath", path);
+        $.ajax({
+            url: '/disk/FileOption/uploadFile',
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.code != "0") {
+                    layer.alert(res.msg)
+                } else{
+                    showFileNode(res.data);
+                }
+            }
+        });
+    });
 })
+//文件夹重命名
+function rename(name){
+    layer.prompt({
+        formType: 0,
+        value: '',
+        title: '重命名',
+        btn: ['确定','取消'], //按钮，
+        btnAlign: 'c'
+    }, function(value,index){
+        layer.close(index);
+        var path = $("#path").children("a:last-child").attr("data");
+        if(value != "" && value != null){
+            $.post("/disk/FileOption/rename",{
+                "path":path,
+                "newName":value,
+                "oldName":name
+            },function(result){
+                if(result.code == 0){
+                    showFileNode(result.data);
+                }else{
+                    layer.alert(result.msg)
+                }
+            });
+        }
+    });
+}
 
+//删除目录或者文件
+function deleteNode(name){
+    layer.confirm('确定删除?', function(index){
+        var path = $("#path").children("a:last-child").attr("data");
+        $.post("/disk/FileOption/deleteNode",{
+            "path":path,
+            "name":name
+        },function(result){
+            if(result.code == 0){
+                showFileNode(result.data);
+            }else{
+                layer.alert(result.msg)
+            }
+        });
+        layer.close(index);
+    });
+}
+
+//创建目录
 function mkdir(){
     layer.prompt({
         formType: 0,
@@ -33,6 +104,7 @@ function mkdir(){
     });
 }
 
+//加载对应路径的所有文件夹及文件
 function loadFileNode(path) {
     $.post("/disk/FileOption/loadFileNode",{
         "path":path,
@@ -44,27 +116,27 @@ function loadFileNode(path) {
         }
     });
 }
-
+//加载对应路径下子文件夹及文件
 function loadChildNode(path){
     var name = path;
     var parentPath = $("#path").children("a:last-child").attr("data");
     if(parentPath != "/"){
         parentPath = parentPath+"/";
-        name = name + "/";
     }
+    name = name + "/";
     path = parentPath+path;
     $.post("/disk/FileOption/loadFileNode",{
         "path":path,
     },function(result){
         if(result.code == 0){
             showFileNode(result.data);
-            $("#path").append('<a href="javascript:void(0);" data="'+path+'" onclick="loadFileNode('+path+')">'+name+'</a>');
+            $("#path").append('<a href="javascript:void(0);" data="'+path+'" onclick="loadFileNode(\''+path+'\')">'+name+'</a>');
         }else{
             layer.alert(result.msg)
         }
     });
 }
-
+//加载对应路径下父文件夹及文件
 function loadParentNode(){
     var path = $("#path").children("a:last-child").attr("data");
     if(path == "/"){
@@ -85,31 +157,16 @@ function loadParentNode(){
 /*文件上传*/
 function postData() {
     $("#file").trigger("click");
-    var formData = new FormData();
-    formData.append("file", $("#file")[0].files[0]);
-    $.ajax({
-        url: '/disk/FileOption/uploadFile', /*接口域名地址*/
-        type: 'post',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (res) {
-            console.log(res.data);
-            if (res.code == "0") {
-                layer.alert("添加成功")
-            } else{
-                layer.alert(res.msg)
-            }
-        }
-    })
 }
 
+//在当前页面展示所有节点
 function showFileNode(FileNodes){
     $("#fileNodeBody").empty();
     for(var index in FileNodes){
         var node = FileNodes[index];
         var name = node.fileName;
         var size = node.fileSize;
+        var rename = "";
         var inChild = "<a href='javascript:void(0);' class='d-flex align-items-center'>";
         if(size == null){
             size = "";
@@ -118,6 +175,7 @@ function showFileNode(FileNodes){
         if(node.isFolder){
             filetype = "ti-folder";
             inChild = "<a href='javascript:void(0);' class='d-flex align-items-center' onclick='loadChildNode(\""+name+"\")'>";
+            rename = "onclick=rename(\'"+name+"\')";
         }
         var oddOrEven = "even";
         if(index % 2 == 0){
@@ -155,8 +213,8 @@ function showFileNode(FileNodes){
             "<a href='#' class='dropdown-item'>下载</a>" +
             "<a href='#' class='dropdown-item'>复制到</a>" +
             "<a href='#' class='dropdown-item'>移动到</a>" +
-            "<a href='#' class='dropdown-item'>重命名</a>" +
-            "<a href='#' class='dropdown-item'>删除</a>" +
+            "<a href='#' class='dropdown-item' "+rename+">重命名</a>" +
+            "<a href='#' class='dropdown-item' onclick='deleteNode(\""+name+"\")'>删除</a>" +
             "</div>" +
             "</div>" +
             "</td>" +

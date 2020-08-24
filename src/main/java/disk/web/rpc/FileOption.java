@@ -1,13 +1,16 @@
 package disk.web.rpc;
 
+import com.hnit.disk.response.FileNodeVO;
 import com.hnit.disk.response.ResMsg;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @Author: liguangming
@@ -16,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 @FeignClient(value = "FILE-CENTER",name = "FILE-CENTER")
 public interface FileOption {
-    @RequestMapping(value = "/disk/fileCenter/catelogOption/uploadFile",method = RequestMethod.POST)
-    public ResMsg<Boolean> uploadFile(@RequestBody MultipartFile file);
+    @PostMapping(value = "/disk/fileCenter/fileOption/uploadFile", produces = { MediaType.APPLICATION_JSON_UTF8_VALUE }, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResMsg<Boolean> uploadFile(@RequestPart(value = "file", required = false) MultipartFile file,@RequestParam("toPath") String toPath);
+
+    @RequestMapping(value = "/disk/fileCenter/fileOption/deleteNode",method = RequestMethod.POST)
+    public ResMsg<Boolean> deleteNode(@RequestParam("path") String path,@RequestParam("name") String name);
 }
