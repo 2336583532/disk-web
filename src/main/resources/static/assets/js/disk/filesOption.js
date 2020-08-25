@@ -3,8 +3,6 @@ layui.use(['layer'], function(){
     var $ = layui.jquery;
 });
 
-
-
 //上传文件
 $(function(){
     var path = $("#path").children("a:last-child").attr("data");
@@ -33,6 +31,27 @@ $(function(){
         });
     });
 })
+
+//按类型分组
+function orderBy(type){
+    var formData = new FormData()
+    formData.append("type",type);
+    $.ajax({
+        url: '/disk/FileOption/orderBy',
+        type: 'post',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            if (res.code != "0") {
+                layer.alert(res.msg)
+            } else{
+                showFileNode(res.data);
+            }
+        }
+    });
+}
+
 //文件夹重命名
 function rename(name){
     layer.prompt({
@@ -56,6 +75,23 @@ function rename(name){
                     layer.alert(result.msg)
                 }
             });
+        }
+    });
+}
+//文件下载
+function downloadFile(filename){
+    var path = $("#path").children("a:last-child").attr("data");
+    $.post("/disk/FileOption/download",{
+        "filePath":path,
+        "fileName":filename,
+    },function(result){
+        if(result.code != 0){
+            layer.alert(result.msg)
+        }else{
+            var download = $("#download");
+            download.prepend("<a id=\"down\" href=\"\\file\\"+filename+"\" target=\"_blank\" download=\"\\file\\"+filename+"\" style=\"display:none\"></a>");
+            console.log(download);
+            $("#down")[0].click();
         }
     });
 }
@@ -167,6 +203,7 @@ function showFileNode(FileNodes){
         var name = node.fileName;
         var size = node.fileSize;
         var rename = "";
+        var download="onclick=downloadFile(\""+name+"\")";
         var inChild = "<a href='javascript:void(0);' class='d-flex align-items-center'>";
         if(size == null){
             size = "";
@@ -176,6 +213,7 @@ function showFileNode(FileNodes){
             filetype = "ti-folder";
             inChild = "<a href='javascript:void(0);' class='d-flex align-items-center' onclick='loadChildNode(\""+name+"\")'>";
             rename = "onclick=rename(\'"+name+"\')";
+            download="";
         }
         var oddOrEven = "even";
         if(index % 2 == 0){
@@ -208,11 +246,8 @@ function showFileNode(FileNodes){
             "<i class='ti-more-alt'></i>" +
             "</a>" +
             "<div class='dropdown-menu dropdown-menu-right'>" +
-            "<a href='#' class='dropdown-item' data-sidebar-target='#view-detail'>查看详情</a>" +
             "<a href='#' class='dropdown-item'>分享</a>" +
-            "<a href='#' class='dropdown-item'>下载</a>" +
-            "<a href='#' class='dropdown-item'>复制到</a>" +
-            "<a href='#' class='dropdown-item'>移动到</a>" +
+            "<a href='#' class='dropdown-item' "+download+">下载</a>" +
             "<a href='#' class='dropdown-item' "+rename+">重命名</a>" +
             "<a href='#' class='dropdown-item' onclick='deleteNode(\""+name+"\")'>删除</a>" +
             "</div>" +

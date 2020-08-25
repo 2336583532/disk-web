@@ -25,5 +25,5 @@ public interface CataOption {
     public ResMsg<List<FileNodeVO>> getFiles(@RequestParam("path") String path);
 
     @RequestMapping(value = "/disk/fileCenter/catelogOption/rename",method = RequestMethod.GET)
-    public ResMsg<Boolean> rename(@RequestParam("path")String path, @RequestParam("newName")String oldName, @RequestParam("oldName")String newName);
+    public ResMsg<Boolean> rename(@RequestParam("path")String path, @RequestParam("newName")String newName, @RequestParam("oldName")String oldName);
 }

@@ -960,7 +960,8 @@
     <!-- ./ Content wrapper -->
 </div>
 <!-- ./ Layout wrapper -->
-
+<div id="download">
+</div>
 <!-- Main scripts -->
 <script src="/vendors/bundle.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>

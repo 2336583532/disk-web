@@ -6,6 +6,8 @@ import disk.web.rpc.CataOption;
 import disk.web.rpc.FileOption;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +15,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -22,12 +32,16 @@ import java.util.List;
 @Api("文件操作接口")
 @Controller
 @RequestMapping("/disk/FileOption")
+@Slf4j
 public class FileOptionController {
     @Resource
     private CataOption cataOption;
 
     @Resource
     private FileOption fileOption;
+
+    @Value("${file.upload}")
+    private String fileLoadPath;
 
     /**
      * 进入个人文件中心
@@ -102,11 +116,57 @@ public class FileOptionController {
             ResMsg<List<FileNodeVO>> files = cataOption.getFiles(path);
             return files;
         }
-        ResMsg<Boolean> mkdir = cataOption.rename(path,oldName,newName);
+        ResMsg<Boolean> mkdir = cataOption.rename(path,newName,oldName);
         if(mkdir.getCode() == ResMsg.FAIL_CODE){
             return  ResMsg.builderFail("网络异常，稍后再试!");
         }
         ResMsg<List<FileNodeVO>> files = cataOption.getFiles(path);
         return files;
     }
+
+    /**
+     * 文件下载
+     */
+    @ApiOperation(value = "文件下载",notes="文件下载")
+    @PostMapping("/download")
+    @ResponseBody
+    public ResMsg download(String filePath,String fileName){
+        ResMsg<File> download = fileOption.download(filePath, fileName);
+        if(download.getCode()==ResMsg.SUCCESS_CODE){
+            File file = download.getData();
+            FileChannel input = null;
+            FileChannel output = null;
+
+            try {
+                input = new FileInputStream(file).getChannel();
+                output = new FileOutputStream(new File(fileLoadPath+File.pathSeparator+fileName)).getChannel();
+                output.transferFrom(input, 0, input.size());
+            } catch (Exception e) {
+                log.error("copyNio", "error occur while copy", e);
+            } finally {
+                try {
+                    input.close();
+                    output.close();
+                } catch (IOException e) {
+                   log.error("文件关闭异常");
+                }
+
+            }
+            return ResMsg.builderSuccess(true);
+        }
+        return  ResMsg.builderFail("网络异常，稍后再试!");
+    }
+
+    /**
+     * 文件分类
+     */
+    @ApiOperation(value = "文件分类",notes="文件分类")
+    @PostMapping("/orderBy")
+    @ResponseBody
+    public ResMsg orderBy(String type){
+        ResMsg<FileNodeVO> fileNodeVOResMsg = fileOption.orderBy("/", type);
+        return  fileNodeVOResMsg;
+    }
+
+
 }

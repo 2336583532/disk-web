@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -24,4 +25,10 @@ public interface FileOption {
 
     @RequestMapping(value = "/disk/fileCenter/fileOption/deleteNode",method = RequestMethod.POST)
     public ResMsg<Boolean> deleteNode(@RequestParam("path") String path,@RequestParam("name") String name);
+
+    @RequestMapping(value = "/disk/fileCenter/fileOption/download",method = RequestMethod.POST)
+    public ResMsg<File> download(@RequestParam("filePath")String filePath,@RequestParam("fileName") String fileName);
+
+    @RequestMapping(value = "/disk/fileCenter/fileOption/orderBy",method = RequestMethod.POST)
+    public ResMsg<FileNodeVO> orderBy(@RequestParam("path")String path,@RequestParam("type") String type);
 }
