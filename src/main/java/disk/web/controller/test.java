@@ -8,19 +8,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @Author: liguangming
- * @Date: 2020/8/13
+ * @Date: 2021/2/18
  */
-@Api("用户权限接口")
+@Api("测试接口")
 @Controller
-@RequestMapping("/disk/UserAuthority")
-public class UserAuthority {
-
+@RequestMapping("/")
+public class test {
     /**
      * 用户登录
      */
-    @ApiOperation(value = "用户登录接口",notes = "用户登录接口")
-    @GetMapping("/toLogin")
+    @ApiOperation(value = "测试接口",notes = "测试接口")
+    @GetMapping("/")
     public String Login() {
-        return "freemarker/login";
+        return "freemarker/test";
     }
 }

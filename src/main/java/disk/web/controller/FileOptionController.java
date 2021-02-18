@@ -1,7 +1,7 @@
 package disk.web.controller;
 
-import com.hnit.disk.response.FileNodeVO;
-import com.hnit.disk.response.ResMsg;
+import disk.web.response.FileNodeVO;
+import disk.web.response.ResMsg;
 import disk.web.rpc.CataOption;
 import disk.web.rpc.FileOption;
 import io.swagger.annotations.Api;
@@ -20,9 +20,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**

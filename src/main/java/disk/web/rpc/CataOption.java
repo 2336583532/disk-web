@@ -1,7 +1,8 @@
 package disk.web.rpc;
 
-import com.hnit.disk.response.FileNodeVO;
-import com.hnit.disk.response.ResMsg;
+
+import disk.web.response.FileNodeVO;
+import disk.web.response.ResMsg;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
